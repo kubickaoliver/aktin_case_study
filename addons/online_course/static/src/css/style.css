@@ -1,0 +1,29 @@
+/*
+ * Style for the corner ribbon on the Kanban card
+ */
+
+/* Container for the ribbon - ensures correct clipping and position */
+.o_kanban_ribbon_wrapper {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* The ribbon itself - the colored strip */
+.o_kanban_ribbon {
+    position: absolute;
+    top: 22px;
+    right: -25px;
+    transform: rotate(45deg);
+    padding: 5px 0;
+    width: 120px;
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

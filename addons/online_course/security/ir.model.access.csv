@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_course_course_manager,online_course.course.manager,model_online_course_course,online_course.group_online_course_manager,1,1,1,1
+access_course_course_teacher,online_course.course.teacher,model_online_course_course,online_course.group_online_course_teacher,1,1,1,1
+access_course_course_student,online_course.course.student,model_online_course_course,online_course.group_online_course_student,1,0,0,0
+
+access_enrollment_manager,online_course.enrollment.manager,model_online_course_enrollment,online_course.group_online_course_manager,1,1,1,1
+access_enrollment_teacher,online_course.enrollment.teacher,model_online_course_enrollment,online_course.group_online_course_teacher,1,1,1,1
+access_enrollment_student,online_course.enrollment.student,model_online_course_enrollment,online_course.group_online_course_student,1,0,0,1

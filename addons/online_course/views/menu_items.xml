@@ -1,0 +1,4 @@
+<odoo>
+    <menuitem id="menu_online_course_root" name="Online Courses" web_icon="online_course,static/description/icon.png" sequence="10" groups="base.group_user"/>
+    <menuitem id="menu_course_courses" name="Courses" parent="menu_online_course_root" action="action_course_course" sequence="10" groups="base.group_user"/>
+</odoo>

@@ -1,0 +1,120 @@
+[project]
+name = "stores_odoo"
+authors = [
+    { name = "Gymbeam Odoo Team", email = "odoo-team@gymbeam.com" }
+]
+version = "1.0.0"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+indent-width = 4
+exclude = [
+    ".git",
+    ".git-rewrite",
+    ".idea",
+    ".mypy_cache",
+    ".pyenv",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    "venv",
+    "libraries",
+    "*.pyi",
+]
+
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "D",
+    "C",
+    "R",
+]
+fixable = ["ALL"]
+ignore = [
+    "D203",  # 1 blank line required before class docstring (conflicts with D211)
+    "D212",  # Multi-line docstring summary should start at the first line
+    "E902",  # IOError (was E0401 in pylama)
+
+    # Additional useful ignores for Odoo development
+    "N999",   # Invalid module name (Odoo modules often have specific naming)
+    "COM812", # Missing trailing comma (can conflict with formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__manifest__.py" = ["D100"]
+"**/models/**" = ["N815"]  # Allow mixedCase variable names in models (Odoo fields)
+"**/controllers/**" = ["N802", "N803"]  # Allow different naming in controllers
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.mccabe]
+# Same complexity limit as pylama default
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+known-first-party = ["odoo", "odoo.addons"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+skip-magic-trailing-comma = false
+
+[tool.pylint.main]
+load-plugins = ["pylint_odoo", "pylint_pydantic"]
+init-hook = "import sys; sys.path.append('.')"
+ignore = ["libraries", "scripts", "docs", "data", "config", "venv"]
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.design]
+max-args = 8
+max-positional-arguments = 8
+max-locals = 25
+max-branches = 20
+
+[tool.pylint.messages_control]
+disable = [
+    "line-too-long",           # C0301 - ruff handles this
+    "trailing-whitespace",     # C0303 - ruff handles this
+    "missing-final-newline",   # C0304 - ruff handles this
+    "unused-import",           # W0611 - ruff handles this
+    "unused-variable",         # W0612 - ruff handles this
+    "undefined-variable",      # E0602 - ruff handles this
+    "import-error",            # E0401 - ruff handles this
+    "wrong-import-order",      # C0411 - ruff handles this
+    "ungrouped-imports",       # C0412 - ruff handles this
+    "missing-module-docstring", # C0114 - ruff handles this
+    "missing-class-docstring",  # C0115 - ruff handles this
+    "missing-function-docstring", # C0116 - ruff handles this
+    "manifest-required-author", # C0103
+    "missing-readme",          # C8112
+    "no-wizard-in-models",     # C8113
+    "resource-not-exist",      # F8101
+    "too-few-public-methods",  # R0903
+    "super-with-arguments",    # R1725
+    "consider-using-f-string", # C0209 - can conflict with Odoo's translation system
+    "protected-access",        # W0212
+    "pointless-statement",     # W0104
+    "logging-fstring-interpolation", # W1203
+    "duplicate-code",            # R0801
+    "broad-exception-caught",    # W0718
+    "prefer-env-translation",    # W8161
+    "invalid-name",              # C0103
+    "translation-required",      # C8107
+    "no-search-all",               # W8163
+    "consider-merging-classes-inherited",  # R8180
+    "abstract-method",           # W0223
+]
+
+enable = [
+    "logging-format-interpolation",  # W1202
+]

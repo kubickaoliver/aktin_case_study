@@ -1,0 +1,14 @@
+<odoo>
+    <record id="action_course_course" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">online_course.course</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No courses have been created yet.
+            </p><p>
+                Create your first course and start teaching!
+            </p>
+        </field>
+    </record>
+</odoo>

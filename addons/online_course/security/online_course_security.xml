@@ -1,0 +1,90 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Security Category -->
+        <record id="module_category_online_course" model="ir.module.category">
+            <field name="name">Online Courses</field>
+            <field name="description">User access levels for the Online Courses module.</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- Student Group -->
+        <record id="group_online_course_student" model="res.groups">
+            <field name="name">Student</field>
+            <field name="category_id" ref="module_category_online_course"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">Users can see published courses and enroll.</field>
+        </record>
+
+        <record id="base.group_user" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('online_course.group_online_course_student'))]"/>
+        </record>
+
+        <!-- Teacher Group -->
+        <record id="group_online_course_teacher" model="res.groups">
+            <field name="name">Teacher</field>
+            <field name="category_id" ref="module_category_online_course"/>
+            <field name="implied_ids" eval="[(4, ref('group_online_course_student'))]"/>
+            <field name="comment">Teachers can create and manage their own courses.</field>
+        </record>
+
+        <!-- Manager Group -->
+        <record id="group_online_course_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_online_course"/>
+            <field name="implied_ids" eval="[(4, ref('group_online_course_teacher'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+            <field name="comment">Managers can manage all courses and settings.</field>
+        </record>
+
+        <!-- Record Rules -->
+        <record id="course_student_can_see_published" model="ir.rule">
+            <field name="name">Student: see published courses only</field>
+            <field name="model_id" ref="model_online_course_course"/>
+            <field name="groups" eval="[(4, ref('group_online_course_student'))]"/>
+            <field name="domain_force">[('state', '=', 'published')]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="course_teacher_rule" model="ir.rule">
+            <field name="name">Teacher: own courses only</field>
+            <field name="model_id" ref="model_online_course_course"/>
+            <field name="domain_force">[('teacher_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_online_course_teacher'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="course_manager_rule" model="ir.rule">
+            <field name="name">Manager: all courses</field>
+            <field name="model_id" ref="model_online_course_course"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_online_course_manager'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="enrollment_student_rule" model="ir.rule">
+            <field name="name">Student: own enrollments only</field>
+            <field name="model_id" ref="model_online_course_enrollment"/>
+            <field name="domain_force">[('student_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_online_course_student'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="1"/> </record>
+
+        <record id="enrollment_teacher_rule" model="ir.rule">
+            <field name="name">Teacher: enrollments for own courses</field>
+            <field name="model_id" ref="model_online_course_enrollment"/>
+            <field name="domain_force">[('course_id.teacher_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_online_course_teacher'))]"/>
+        </record>
+    </data>
+</odoo>
